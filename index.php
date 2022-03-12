@@ -21,25 +21,9 @@
       <img id="cart-icon" src="images/icon-cart.svg" alt="cart">
     </nav>
 
-    <div class="product-page">
-
-      <div class="product-images">
-        <img class="product-image" src="images/image-product-1.jpg" alt="product">
-      </div>
-
-      <div class="product-info">
-        <h3>Sneaker Company</h3>
-        <h2>Fall Limited Edition Sneakers</h2>
-        <p>
-          These low-profile sneakers are your perfect casual wear companion.
-          Featuring a durable rubber outer sole, they’ll withstand everything the
-          weather can offer.
-        </p>
-        <p class="product-price">$125.00</p>
-        <button type="button" name="button">Add to cart</button>
-      </div>
-
-    </div>
+    <main>
+      <h2>Homepage Content</h2>
+    </main>
 
     <footer>
       <p>Evan Hogarth</p>
