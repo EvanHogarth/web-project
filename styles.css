@@ -42,12 +42,22 @@ nav #logo {
   border-bottom: 2px solid hsl(26, 100%, 55%);
 }
 
+
+.homepage-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 135px);
+}
+
+
+
 .product-page {
   /* padding: 80px 40px; */
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 130px);
+  min-height: calc(100vh - 135px);
 }
 
 .product-info {

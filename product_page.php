@@ -13,8 +13,6 @@
     <nav>
       <a href="index.php"><img id="logo" src="images/logo.svg" alt="logo"></a>
       <a class="nav-links" href="#">Collections</a>
-      <a class="nav-links" href="#">Men</a>
-      <a class="nav-links" href="#">Women</a>
       <a class="nav-links" href="#">About</a>
       <a class="nav-links" href="#">Contact</a>
 
@@ -28,13 +26,17 @@
       </div>
 
       <div class="product-info">
-        <h3>Sneaker Company</h3>
+        <!-- Category -->
+        <h3>Sneakers</h3>
+        <!-- Product Name -->
         <h2>Fall Limited Edition Sneakers</h2>
+        <!-- Product Description -->
         <p>
           These low-profile sneakers are your perfect casual wear companion.
           Featuring a durable rubber outer sole, they’ll withstand everything the
           weather can offer.
         </p>
+        <!-- Product Price -->
         <p class="product-price">$125.00</p>
         <button type="button" name="button">Add to cart</button>
       </div>

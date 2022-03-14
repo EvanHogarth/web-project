@@ -1,5 +1,5 @@
 <?php
-
+  require('connect.php');
 ?>
 
 <!DOCTYPE html>
@@ -12,14 +12,14 @@
   <body>
     <nav>
       <a href="index.php"><img id="logo" src="images/logo.svg" alt="logo"></a>
-      <a class="nav-links" href="#">Collections</a>
+      <a class="nav-links" href="product_page.php">Collections</a>
       <a class="nav-links" href="#">About</a>
       <a class="nav-links" href="#">Contact</a>
 
       <img id="cart-icon" src="images/icon-cart.svg" alt="cart">
     </nav>
 
-    <main>
+    <main class="homepage-content">
       <h2>Homepage Content</h2>
     </main>
 
