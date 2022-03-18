@@ -102,3 +102,78 @@ footer {
   opacity: 0.5;
   font-size: 14px;
 }
+
+.category-page {
+  padding: 0px 40px;
+}
+
+.cp-product-block {
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+  /* border: 1px solid rgba(0, 0, 0, 0.5); */
+  margin: 20px;
+  padding: 20px;
+  /* border-radius: 10px; */
+}
+
+.category-page .link-product {
+  color: #000;
+}
+.category-page .link-product:hover {
+  opacity: 0.7;
+  text-decoration: underline;
+}
+
+.cp-product-image {
+  width: 300px;
+  margin-right: 60px;
+  border-radius: 20px;
+}
+
+.category-page p {
+  margin: 0px;
+}
+
+
+.admin-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 135px);
+}
+
+.create-product-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.create-product-form label {
+  margin: 20px 0px 10px 0px;
+}
+
+.create-product-form input {
+  height: 20px;
+}
+
+.create-product-form button {
+  width: 100px;
+  height: 25px;
+  margin-top: 10px;
+}
+.create-product-form button:hover {
+  cursor: pointer;
+}
+
+.spread {
+  margin: 25px 0px 10px 0px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.create-product-form .spread label {
+  margin: 0px;
+  margin-right: 10px;
+}
