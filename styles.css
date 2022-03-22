@@ -20,6 +20,10 @@ nav {
 }
 
 nav #cart-icon {
+  /* margin-left: auto; */
+}
+
+nav #admin-link {
   margin-left: auto;
 }
 
@@ -140,7 +144,8 @@ footer {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  margin: 40px 60px;
   min-height: calc(100vh - 135px);
 }
 
@@ -176,4 +181,12 @@ footer {
 .create-product-form .spread label {
   margin: 0px;
   margin-right: 10px;
+}
+
+
+
+.simple-flex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
