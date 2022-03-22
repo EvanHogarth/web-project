@@ -24,15 +24,18 @@
         $statement->execute();
         $categories = $statement->fetchAll();
       ?>
-      <ul>
+      <div>
         <?php foreach($categories as $category): ?>
-          <li>ID: <?= $category['category_id'] ?></li>
-          <li><?= $category['category_name'] ?></li>
-          <br/>
-        <?php endforeach ?>
-      </ul>
+          <p>
+            ID: <?= $category['category_id'] ?>
+            <br />
+            <?= $category['category_name'] ?>
+          </p>
 
-      <a href="#"><button>Add Category</button></a>
+        <?php endforeach ?>
+      </div>
+
+      <a href="create_category.php"><button>Add Category</button></a>
 
       <h3>Products</h3>
       <?php
@@ -42,41 +45,19 @@
         $productStatement->execute();
         $products = $productStatement->fetchAll();
       ?>
-      <ul>
+      <div>
         <?php foreach($products as $product): ?>
-          <li>Product ID: <?= $product['id'] ?></li>
-          <li><?= $product['product_name'] ?></li>
-          <br/>
+          <p>
+            Product ID: <?= $product['id'] ?>
+            <br />
+            <?= $product['product_name'] ?>
+          </p>
         <?php endforeach ?>
-      </ul>
+      </div>
 
-      <a href="#"><button>Add Product</button></a>
-      
-      <!-- <form class="create-product-form" action="create_product.php" method="post">
-        <label for="title">Product Name</label>
-        <input id="title" type="text" name="title" value="">
-
-        <label for="category">Category</label>
-        <input id="title" type="text" name="category" value="">
-
-        <label for="content">Description</label>
-        <textarea id="content" name="content" rows="8" cols="80"></textarea>
-
-        <div class="spread">
-          <div class="">
-            <label for="price">Price</label>
-            <input id="price" type="number" name="price" value="">
-          </div>
-
-          <div class="">
-            <label for="stock">Stock</label>
-            <input id="stock" type="number" name="stock" value="">
-          </div>
-        </div>
+      <a href="create_product.php"><button>Add Product</button></a>
 
 
-        <button type="submit" name="button">SUBMIT</button>
-      </form> -->
     </main>
 
     <footer>
