@@ -24,18 +24,27 @@
         $statement->execute();
         $categories = $statement->fetchAll();
       ?>
-      <div>
-        <?php foreach($categories as $category): ?>
-          <p>
-            ID: <?= $category['category_id'] ?>
-            <br />
-            <?= $category['category_name'] ?>
-          </p>
+      <table class="admin-tables">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Category Name</th>
+          </tr>
+        </thead>
 
-        <?php endforeach ?>
-      </div>
+        <tbody>
+          <?php foreach($categories as $category): ?>
+            <tr>
+              <td><?= $category['category_id'] ?></td>
+              <td><?= $category['category_name'] ?></td>
+              <td class="remove"><a href="#">Edit</a></td>
+              <td class="remove"><a href="#">Remove</a></td>
+            </tr>
+          <?php endforeach ?>
+        </tbody>
+      </table>
 
-      <a href="create_category.php"><button>Add Category</button></a>
+      <a href="create_category.php"><button class="admin-buttons">Add Category</button></a>
 
       <h3>Products</h3>
       <?php
@@ -45,18 +54,23 @@
         $productStatement->execute();
         $products = $productStatement->fetchAll();
       ?>
-      <div>
+      <table class="admin-tables">
+        <tr>
+          <th>ID</th>
+          <th>Product Name</th>
+        </tr>
+
         <?php foreach($products as $product): ?>
-          <p>
-            Product ID: <?= $product['id'] ?>
-            <br />
-            <?= $product['product_name'] ?>
-          </p>
+          <tr>
+            <td><?= $product['id'] ?></td>
+            <td><?= $product['product_name'] ?></td>
+            <td class="remove"><a href="#">Edit</a></td>
+            <td class="remove"><a href="#">Remove</a></td>
+          </tr>
         <?php endforeach ?>
-      </div>
+      </table>
 
-      <a href="create_product.php"><button>Add Product</button></a>
-
+      <a href="create_product.php"><button class="admin-buttons">Add Product</button></a>
 
     </main>
 
