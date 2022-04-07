@@ -1,5 +1,6 @@
 <?php
   require('connect.php');
+  require('authenticate.php');
 
   // Checks that POST has been sent and that the title and content are not empty.
   if($_POST && !empty($_POST['title']) && !empty($_POST['content'])){
@@ -56,8 +57,20 @@
         <label for="title">Product Name</label>
         <input id="title" type="text" name="title" value="">
 
+        <?php
+          $category_query = "SELECT * FROM categories";
+          $category_statement = $db->prepare($category_query);
+          // $statement->bindValue(':id', $id, PDO::PARAM_INT);
+          $category_statement->execute();
+          $categories = $category_statement->fetchAll();
+        ?>
         <label for="category">Category</label>
-        <input id="category" type="text" name="category" value="">
+        <!-- <input id="category" type="text" name="category" value=""> -->
+        <select id="category" name="category">
+          <?php foreach($categories as $category): ?>
+            <option value="<?= $category['category_id'] ?>"><?= $category['category_name'] ?></option>
+          <?php endforeach ?>
+        </select>
 
         <label for="content">Description</label>
         <textarea id="content" name="content" rows="8" cols="80"></textarea>
