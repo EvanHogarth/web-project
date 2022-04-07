@@ -27,9 +27,7 @@
     <div class="product-page">
 
       <div class="product-images">
-        
-        <img class="product-image" src="images/<?= $row['image_url'] ?>" alt="product image">
-        <!-- <img class="product-image" src="images/image-product-1.jpg" alt="product"> -->
+        <!-- <img class="product-image" src="images/<?= $row['image_url'] ?>" alt="product image"> -->
       </div>
 
       <div class="product-info">

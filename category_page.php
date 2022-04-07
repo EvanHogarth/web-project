@@ -22,7 +22,7 @@
     <main class="category-page">
       <?php while($row = $statement->fetch()): ?>
         <div class="cp-product-block">
-          <img class="cp-product-image" src="images/<?= $row['image_url'] ?>" alt="product image">
+          <!-- <img class="cp-product-image" src="images/<?= $row['image_url'] ?>" alt="product image"> -->
           <a class="link-product" href="product_page.php?id=<?= $row['id'] ?>"><h3><?= $row['product_name'] ?></h3></a>
           <p>$<?= $row['price'] ?></p>
         </div>
