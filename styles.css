@@ -203,6 +203,7 @@ footer {
   border-collapse: collapse;
   width: 100%;
   margin-bottom: 20px;
+  max-width: 800px;
 }
 
 .admin-tables tr {
@@ -245,4 +246,21 @@ footer {
 .admin-buttons:hover {
   cursor: pointer;
   opacity: 0.7;
+}
+
+.remove-button {
+  font-family: 'Kumbh Sans', sans-serif;
+  font-size: 16px;
+  background: transparent;
+  border: none;
+}
+
+.remove-button:hover {
+  cursor: pointer;
+  color: blue;
+  text-decoration: underline;
+}
+
+select {
+  height: 26px;
 }
