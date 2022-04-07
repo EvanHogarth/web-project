@@ -1,6 +1,37 @@
 <?php
   require('connect.php');
+  require('authenticate.php');
 
+  // DELETE
+  if($_POST && isset($_POST['delete_product'])) {
+    // Sanatize and validate int
+    $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
+
+    // DELETE Query
+    $query = "DELETE FROM products WHERE id = :id";
+    $statement = $db->prepare($query);
+    $statement->bindValue(':id', $id, PDO::PARAM_INT);
+    $statement->execute();
+
+    // Go back to homepage after complete
+    header("Location: admin.php");
+    exit;
+  }
+
+  if($_POST && isset($_POST['delete_category'])) {
+    // Sanatize and validate int
+    $id = filter_input(INPUT_POST, 'category_id', FILTER_SANITIZE_NUMBER_INT);
+
+    // DELETE Query
+    $query = "DELETE FROM categories WHERE category_id = :id";
+    $statement = $db->prepare($query);
+    $statement->bindValue(':id', $id, PDO::PARAM_INT);
+    $statement->execute();
+
+    // Go back to homepage after complete
+    header("Location: admin.php");
+    exit;
+  }
 ?>
 
 <!DOCTYPE html>
@@ -37,8 +68,14 @@
             <tr>
               <td><?= $category['category_id'] ?></td>
               <td><?= $category['category_name'] ?></td>
-              <td class="remove"><a href="#">Edit</a></td>
-              <td class="remove"><a href="#">Remove</a></td>
+              <td class="remove"><a href="edit_category.php?id=<?= $category['category_id'] ?>">Edit</a></td>
+              <td class="remove">
+                <form class="" action="admin.php" method="post">
+                  <input type="hidden" name="category_id" value="<?= $category['category_id'] ?>">
+
+                  <button class="remove-button" type="submit" name="delete_category">Remove</button>
+                </form>
+              </td>
             </tr>
           <?php endforeach ?>
         </tbody>
@@ -64,8 +101,15 @@
           <tr>
             <td><?= $product['id'] ?></td>
             <td><?= $product['product_name'] ?></td>
-            <td class="remove"><a href="#">Edit</a></td>
-            <td class="remove"><a href="#">Remove</a></td>
+            <td class="remove"><a href="edit_product.php?id=<?= $product['id'] ?>">Edit</a></td>
+
+            <td class="remove">
+              <form class="" action="admin.php" method="post">
+                <input type="hidden" name="id" value="<?= $product['id'] ?>">
+
+                <button class="remove-button" type="submit" name="delete_product">Remove</button>
+              </form>
+            </td>
           </tr>
         <?php endforeach ?>
       </table>
