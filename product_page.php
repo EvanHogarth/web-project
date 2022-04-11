@@ -12,6 +12,28 @@
   $statement->execute();
 
   $row = $statement->fetch();
+
+  //Handle comment form submission
+  if($_POST && isset($_POST['submit']) && !empty($_POST['comment'])){
+    // Sanitize the input
+    $product_id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+    $user_name = filter_input(INPUT_POST, 'user_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $review_comment = filter_input(INPUT_POST, 'comment', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+    // Create INSERT query
+    $query = "INSERT INTO reviews (product_id, user_name, comment) values (:product_id, :user_name, :comment)";
+    $statement = $db->prepare($query);
+
+    // Bind values to query
+    $statement->bindValue(':product_id', $product_id);
+    $statement->bindValue(':user_name', $user_name);
+    $statement->bindValue(':comment', $review_comment);
+
+    // Execute statement
+    $statement->execute();
+
+    header("Location:product_page.php?id=<?= $product_id ?>");
+  }
 ?>
 
 <!DOCTYPE html>
@@ -51,6 +73,43 @@
         <?php endif ?>
       </div>
 
+    </div>
+
+    <div class="comment-container">
+      <h4>Comments</h4>
+
+      <?php
+        $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+        $comment_query = "SELECT * FROM reviews WHERE product_id = :id ORDER BY created_on DESC";
+        $comment_statement = $db->prepare($comment_query);
+        $comment_statement->bindValue(':id', $id, PDO::PARAM_INT);
+        $comment_statement->execute();
+        $comments = $comment_statement->fetchAll();
+      ?>
+      <?php if(empty($comments)): ?>
+        <p>There are no reviews for this product.</p>
+      <?php else: ?>
+        <?php foreach($comments as $comment): ?>
+          <div class="comment-block">
+            <h5>Name: <?= $comment['user_name'] ?></h5>
+            <p>Created on: <?= $comment['created_on'] ?></p>
+            <p>Comment: <?= $comment['comment'] ?></p>
+          </div>
+        <?php endforeach ?>
+      <?php endif ?>
+
+
+      <form id="comment-form" class="comment-form" action="" method="post">
+        <h4>Add a comment</h4>
+
+        <label for="user_name">Name:</label>
+        <input id="user_name" type="text" name="user_name" value="">
+
+        <label for="comment">Comment:</label>
+        <textarea id="comment" name="comment" rows="8" cols="80"></textarea>
+
+        <button type="submit" name="submit">Submit</button>
+      </form>
     </div>
 
     <footer>
