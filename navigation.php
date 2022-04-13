@@ -10,7 +10,7 @@
   <a href="index.php"><h2 id="logo">Logo</h2></a>
   <!-- <a href="index.php"><img id="logo" src="images/logo.svg" alt="logo"></a> -->
 
-  <a class="nav-links" href="category_page.php?id=<?= $category['category_id'] ?>">All Products</a>
+  <a class="nav-links" href="all_products.php">All Products</a>
   <?php while($category = $navStatement->fetch()): ?>
     <a class="nav-links" href="category_page.php?id=<?= $category['category_id'] ?>"><?= $category['category_name'] ?></a>
   <?php endwhile ?>

@@ -21,7 +21,7 @@
 
     $category_query = "SELECT category_name FROM categories WHERE category_id = :category_id";
     $category_statement = $db->prepare($category_query);
-    $statement->bindValue(':category_id', $_GET['category'], PDO::PARAM_INT);
+    $category_statement->bindValue(':category_id', $_GET['category'], PDO::PARAM_INT);
     $category_statement->execute();
     $categories = $category_statement->fetch();
     $category_name = $categories['category_name'];
