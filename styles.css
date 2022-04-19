@@ -82,9 +82,33 @@ nav #logo {
 
 .homepage-content {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: calc(100vh - 135px);
+}
+
+.categories-homepage {
+  /* background-image: url(images/black-buddha-bracelet.jpg); */
+  background-size: cover;
+  background-position: center;
+  /* border: 1px solid black; */
+  min-width: 300px;
+  min-height: 300px;
+  width: 50vw;
+  height: 40vw;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.shop-button {
+  background: white;
+  border: none;
+  width: 60px;
+  height: 30px;
+  font-size: 16px;
+  margin: 10px;
 }
 
 
