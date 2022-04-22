@@ -29,8 +29,53 @@ nav #admin-link {
 }
 
 nav #logo {
-  margin-right: 40px;
+  margin-right: 20px;
 }
+
+.dropdown-button {
+  background-color: inherit;
+  color: black;
+  border: none;
+  /* min-width: 120px; */
+  margin: 15px;
+  color: hsl(219, 9%, 45%);
+  font-size: 16px;
+  padding: 0px;
+  font-family: 'Kumbh Sans', sans-serif;
+}
+
+.dropdown-button:hover {
+  cursor: pointer;
+  color: hsl(220, 13%, 13%);
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  padding-bottom: 5px;
+}
+
+.dropdown-content a {
+  /* color: black; */
+  display: block;
+  background-color: white;
+  padding: 5px;
+}
+
+.dropdown-content a:hover {
+  /* background-color: #ddd; */
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
 
 #cart-icon:hover {
   filter: brightness(120%);
@@ -95,8 +140,11 @@ nav #logo {
   /* border: 1px solid black; */
   min-width: 300px;
   min-height: 300px;
+
   width: 50vw;
   height: 40vw;
+  max-width: 400px;
+  max-height: 400px;
   display: flex;
   justify-content: center;
   align-items: flex-end;
@@ -376,4 +424,9 @@ select {
   max-width: 800px;
   display: flex;
   justify-content: space-between;
+}
+
+
+.error-message {
+  color: red;
 }
