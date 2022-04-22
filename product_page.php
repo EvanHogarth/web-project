@@ -48,9 +48,11 @@
 
     <div class="product-page">
 
-      <div class="product-images">
-        <!-- <img class="product-image" src="images/<?= $row['image_url'] ?>" alt="product image"> -->
-      </div>
+      <?php if(!empty($row['image_url'])): ?>
+        <div class="product-images">
+          <img class="product-image" src="<?= $row['image_url'] ?>" alt="product image">
+        </div>
+      <?php endif ?>
 
       <div class="product-info">
         <!-- Category -->
