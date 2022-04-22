@@ -2,33 +2,44 @@
   require('connect.php');
   require('authenticate.php');
 
-  // DELETE
+  // DELETE PRODUCT
   if($_POST && isset($_POST['delete_product'])) {
     // Sanatize and validate int
     $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
 
-    // DELETE Query
     $query = "DELETE FROM products WHERE id = :id";
     $statement = $db->prepare($query);
     $statement->bindValue(':id', $id, PDO::PARAM_INT);
     $statement->execute();
 
-    // Go back to homepage after complete
     header("Location: admin.php");
     exit;
   }
 
+  // DELETE CATEGORY
   if($_POST && isset($_POST['delete_category'])) {
     // Sanatize and validate int
     $id = filter_input(INPUT_POST, 'category_id', FILTER_SANITIZE_NUMBER_INT);
 
-    // DELETE Query
     $query = "DELETE FROM categories WHERE category_id = :id";
     $statement = $db->prepare($query);
     $statement->bindValue(':id', $id, PDO::PARAM_INT);
     $statement->execute();
 
-    // Go back to homepage after complete
+    header("Location: admin.php");
+    exit;
+  }
+
+  // DELETE USER
+  if($_POST && isset($_POST['delete_user'])) {
+    // Sanatize and validate int
+    $user_id = filter_input(INPUT_POST, 'user_id', FILTER_SANITIZE_NUMBER_INT);
+
+    $query = "DELETE FROM users WHERE user_id = :user_id";
+    $statement = $db->prepare($query);
+    $statement->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+    $statement->execute();
+
     header("Location: admin.php");
     exit;
   }
@@ -127,6 +138,41 @@
 
       <a href="create_product.php"><button class="admin-buttons">Add Product</button></a>
 
+
+      <h3>Users</h3>
+      <?php
+        $query = "SELECT * FROM users";
+        $statement = $db->prepare($query);
+        $statement->execute();
+        $users = $statement->fetchAll();
+      ?>
+      <table class="admin-tables">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <?php foreach($users as $user): ?>
+            <tr>
+              <td><?= $user['user_id'] ?></td>
+              <td><?= $user['user_email'] ?></td>
+              <td class="remove"><a href="update_user.php?id=<?= $user['user_id'] ?>">Edit</a></td>
+              <td class="remove">
+                <form class="" action="admin.php" method="post">
+                  <input type="hidden" name="user_id" value="<?= $user['user_id'] ?>">
+
+                  <button class="remove-button" type="submit" name="delete_user">Remove</button>
+                </form>
+              </td>
+            </tr>
+          <?php endforeach ?>
+        </tbody>
+      </table>
+
+      <a href="create_user.php"><button class="admin-buttons">Add User</button></a>
     </main>
 
     <footer>
