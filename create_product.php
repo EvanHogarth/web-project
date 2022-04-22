@@ -12,19 +12,47 @@
     $price = filter_input(INPUT_POST, 'price', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $stock = filter_input(INPUT_POST, 'stock', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-    // Create INSERT query
-    $query = "INSERT INTO products (category_id, product_name, description, stock, price) values (:category_id, :product_name, :description, :stock, :price)";
-    $statement = $db->prepare($query);
 
-    // Bind values to query
-    $statement->bindValue(':category_id', $category);
-    $statement->bindValue(':product_name', $title);
-    $statement->bindValue(':description', $description);
-    $statement->bindValue(':stock', $stock);
-    $statement->bindValue(':price', $price);
+    $image_upload_detected = isset($_FILES['image']) && ($_FILES['image']['error'] === 0);
+    if ($image_upload_detected) {
+        $image_filename       = $_FILES['image']['name'];
+        $temporary_image_path = $_FILES['image']['tmp_name'];
+        $new_image_path       = "uploads/" . $image_filename;
 
-    // Execute statement
-    $statement->execute();
+        if (file_is_an_image($temporary_image_path, $new_image_path)) {
+            move_uploaded_file($temporary_image_path, $new_image_path);
+
+            // Create INSERT query
+            $query = "INSERT INTO products (category_id, product_name, description, stock, price, image_url) values (:category_id, :product_name, :description, :stock, :price, :image_path)";
+            $statement = $db->prepare($query);
+
+            // Bind values to query
+            $statement->bindValue(':category_id', $category);
+            $statement->bindValue(':product_name', $title);
+            $statement->bindValue(':description', $description);
+            $statement->bindValue(':stock', $stock);
+            $statement->bindValue(':price', $price);
+            $statement->bindValue(':image_path', $new_image_path);
+
+            // Execute statement
+            $statement->execute();
+        }
+        else {
+          // Create INSERT query
+          $query = "INSERT INTO products (category_id, product_name, description, stock, price) values (:category_id, :product_name, :description, :stock, :price)";
+          $statement = $db->prepare($query);
+
+          // Bind values to query
+          $statement->bindValue(':category_id', $category);
+          $statement->bindValue(':product_name', $title);
+          $statement->bindValue(':description', $description);
+          $statement->bindValue(':stock', $stock);
+          $statement->bindValue(':price', $price);
+
+          // Execute statement
+          $statement->execute();
+        }
+    }
 
     // Redirect back to admin page and exit script.
     header("Location: admin.php");
@@ -34,6 +62,25 @@
   else if($_POST && (empty($_POST['title']) || empty($_POST['content']))){
     header("Location: error.html");
     exit;
+  }
+
+  function file_upload_path($original_filename, $upload_subfolder_name = 'uploads') {
+    $current_folder = dirname(__FILE__);
+    $path_segments = [$current_folder, $upload_subfolder_name, basename($original_filename)];
+    return join(DIRECTORY_SEPARATOR, $path_segments);
+  }
+
+  function file_is_an_image($temporary_path, $new_path) {
+    $allowed_mime_types      = ['image/gif', 'image/jpeg', 'image/png'];
+    $allowed_file_extensions = ['gif', 'jpg', 'jpeg', 'png'];
+
+    $actual_file_extension   = pathinfo($new_path, PATHINFO_EXTENSION);
+    $actual_mime_type        = getimagesize($temporary_path)['mime'];
+
+    $file_extension_is_valid = in_array($actual_file_extension, $allowed_file_extensions);
+    $mime_type_is_valid      = in_array($actual_mime_type, $allowed_mime_types);
+
+    return $file_extension_is_valid && $mime_type_is_valid;
   }
 
 ?>
@@ -53,7 +100,7 @@
         <h1>Create Product</h1>
       </div>
 
-      <form class="create-product-form" action="create_product.php" method="post">
+      <form class="create-product-form" enctype="multipart/form-data" method="post">
         <label for="title">Product Name</label>
         <input id="title" type="text" name="title" value="">
 
@@ -87,6 +134,8 @@
           </div>
         </div>
 
+        <label for="image">Image</label>
+        <input type="file" name="image" id="image">
 
         <button type="submit" name="button">SUBMIT</button>
       </form>
