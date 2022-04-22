@@ -44,9 +44,57 @@
 
     $statement->execute();
 
+    // Checkbox for deleting image
+    if(isset($_POST['delete_image'])) {
+      $query = "UPDATE products SET image_url = NULL WHERE id = :id";
+      $statement = $db->prepare($query);
+      $statement->bindValue(':id', $id, PDO::PARAM_INT);
+      $statement->execute();
+
+      unlink($_POST['delete_image']);
+    }
+
+    $image_upload_detected = isset($_FILES['image']) && ($_FILES['image']['error'] === 0);
+    if ($image_upload_detected) {
+      $image_filename       = $_FILES['image']['name'];
+      $temporary_image_path = $_FILES['image']['tmp_name'];
+      $new_image_path       = "uploads/" . $image_filename;
+
+      if (file_is_an_image($temporary_image_path, $new_image_path)) {
+          move_uploaded_file($temporary_image_path, $new_image_path);
+
+          // Create INSERT query
+          $query = "UPDATE products SET image_url = :image_path WHERE id = :id";
+          $statement = $db->prepare($query);
+          $statement->bindValue(':image_path', $new_image_path);
+          $statement->bindValue(':id', $id, PDO::PARAM_INT);
+          $statement->execute();
+        }
+    }
+
     // Go back to admin page after complete
     header("Location: admin.php");
     exit;
+  }
+
+
+  function file_upload_path($original_filename, $upload_subfolder_name = 'uploads') {
+    $current_folder = dirname(__FILE__);
+    $path_segments = [$current_folder, $upload_subfolder_name, basename($original_filename)];
+    return join(DIRECTORY_SEPARATOR, $path_segments);
+  }
+
+  function file_is_an_image($temporary_path, $new_path) {
+    $allowed_mime_types      = ['image/gif', 'image/jpeg', 'image/png'];
+    $allowed_file_extensions = ['gif', 'jpg', 'jpeg', 'png'];
+
+    $actual_file_extension   = pathinfo($new_path, PATHINFO_EXTENSION);
+    $actual_mime_type        = getimagesize($temporary_path)['mime'];
+
+    $file_extension_is_valid = in_array($actual_file_extension, $allowed_file_extensions);
+    $mime_type_is_valid      = in_array($actual_mime_type, $allowed_mime_types);
+
+    return $file_extension_is_valid && $mime_type_is_valid;
   }
 
 ?>
@@ -66,7 +114,7 @@
         <h1>Edit Product</h1>
       </div>
 
-      <form class="create-product-form" method="post">
+      <form class="create-product-form" enctype="multipart/form-data" method="post">
         <input type="hidden" name="id" value="<?= $row['id'] ?>">
 
         <label for="title">Product Name</label>
@@ -105,6 +153,15 @@
             <input id="stock" type="number" name="stock" value="<?= $row['stock'] ?>">
           </div>
         </div>
+
+        <label for="image">Image</label>
+        <input type="file" name="image" id="image">
+
+        <?php if(!empty($row['image_url'])): ?>
+          <p>Current image: <?= $row['image_url'] ?></p>
+          <label for="delete_image">Delete image</label>
+          <input type="checkbox" id="delete_image" name="delete_image" value="<?= $row['image_url'] ?>">
+        <?php endif ?>
 
         <div class="edit-post-buttons">
           <button type="submit" name="update">UPDATE</button>
