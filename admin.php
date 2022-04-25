@@ -94,17 +94,8 @@
 
       <a href="create_category.php"><button class="admin-buttons">Add Category</button></a>
 
-      <div class="admin-spread">
-        <h3>Products</h3>
-        <div class="">
-          <p>Sorted by</p>
-          <select class="" name="">
-            <option value="">Product ID</option>
-            <option value="">Category</option>
-            <option value="">Product Name</option>
-          </select>
-        </div>
-      </div>
+
+      <h3>Products</h3>
 
       <?php
         $productQuery = "SELECT * FROM products";
