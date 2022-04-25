@@ -1,6 +1,7 @@
 <?php
   require('connect.php');
   require('authenticate.php');
+  // require_once('gd_imagestyle.php');
 
   // Checks that POST has been sent and that the title and content are not empty.
   if($_POST && !empty($_POST['title']) && !empty($_POST['content'])){
@@ -18,6 +19,7 @@
         $image_filename       = $_FILES['image']['name'];
         $temporary_image_path = $_FILES['image']['tmp_name'];
         $new_image_path       = "uploads/" . $image_filename;
+
 
         if (file_is_an_image($temporary_image_path, $new_image_path)) {
             move_uploaded_file($temporary_image_path, $new_image_path);
@@ -52,6 +54,21 @@
           // Execute statement
           $statement->execute();
         }
+    }
+    else {
+      // Create INSERT query
+      $query = "INSERT INTO products (category_id, product_name, description, stock, price) values (:category_id, :product_name, :description, :stock, :price)";
+      $statement = $db->prepare($query);
+
+      // Bind values to query
+      $statement->bindValue(':category_id', $category);
+      $statement->bindValue(':product_name', $title);
+      $statement->bindValue(':description', $description);
+      $statement->bindValue(':stock', $stock);
+      $statement->bindValue(':price', $price);
+
+      // Execute statement
+      $statement->execute();
     }
 
     // Redirect back to admin page and exit script.

@@ -430,3 +430,20 @@ select {
 .error-message {
   color: red;
 }
+
+.edit-comment-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* align-items: center; */
+  max-width: 600px;
+  margin-left: 50px;
+}
+
+.comment-block-admin {
+  display: flex;
+  flex-direction: column;
+  min-width: 600px;
+  width: 100%;
+  margin: 40px 0px;
+}
