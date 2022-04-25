@@ -97,6 +97,55 @@
     return $file_extension_is_valid && $mime_type_is_valid;
   }
 
+
+  if($_POST && isset($_POST['update_comment']) && !empty($_POST['comment_name']) && !empty($_POST['comment_message'])) {
+    // Sanatize and validate inputs
+    $comment_id = filter_input(INPUT_POST, 'comment_id', FILTER_SANITIZE_NUMBER_INT);
+    $comment_name = filter_input(INPUT_POST, 'comment_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $comment_msg = filter_input(INPUT_POST, 'comment_message', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+
+    // UPDATE Query
+    $query = "UPDATE reviews SET user_name = :name, comment = :message WHERE review_id = :id";
+    $statement = $db->prepare($query);
+    $statement->bindValue(':name', $comment_name);
+    $statement->bindValue(':message', $comment_msg);
+    $statement->bindValue(':id', $comment_id, PDO::PARAM_INT);
+
+    $statement->execute();
+
+    header("Location: admin.php");
+    exit;
+  }
+  if($_POST && isset($_POST['delete_comment'])) {
+    // Sanatize and validate inputs
+    $comment_id = filter_input(INPUT_POST, 'comment_id', FILTER_SANITIZE_NUMBER_INT);
+
+    $query = "DELETE FROM reviews WHERE review_id = :id";
+    $statement = $db->prepare($query);
+    $statement->bindValue(':id', $comment_id, PDO::PARAM_INT);
+    $statement->execute();
+
+    header("Location: admin.php");
+    exit;
+  }
+  if($_POST && isset($_POST['disemvowel'])) {
+    // Sanatize and validate inputs
+    $comment_id = filter_input(INPUT_POST, 'comment_id', FILTER_SANITIZE_NUMBER_INT);
+    $comment_msg = filter_input(INPUT_POST, 'comment_message', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+    $updated_comment = str_replace(array('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'), '', $comment_msg);
+
+    $query = "UPDATE reviews SET comment = :message WHERE review_id = :id";
+    $statement = $db->prepare($query);
+    $statement->bindValue(':message', $updated_comment);
+    $statement->bindValue(':id', $comment_id, PDO::PARAM_INT);
+    $statement->execute();
+
+    header("Location: admin.php");
+    exit;
+  }
+
 ?>
 
 <!DOCTYPE html>
@@ -168,6 +217,41 @@
           <!-- <button type="submit" name="delete">DELETE</button> -->
         </div>
       </form>
+
+      <h3>Comments</h3>
+      <?php
+        $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+        $comment_query = "SELECT * FROM reviews WHERE product_id = :id ORDER BY created_on DESC";
+        $comment_statement = $db->prepare($comment_query);
+        $comment_statement->bindValue(':id', $id, PDO::PARAM_INT);
+        $comment_statement->execute();
+        $comments = $comment_statement->fetchAll();
+      ?>
+      <?php if(empty($comments)): ?>
+        <p>There are no reviews for this product.</p>
+      <?php else: ?>
+
+          <?php foreach($comments as $comment): ?>
+            <div class="comment-block-admin">
+
+
+              <form class="edit-comment-form" method="post">
+                <input type="hidden" name="comment_id" value="<?= $comment['review_id'] ?>">
+
+                <label for="comment_name">Name</label>
+                <input id="comment_name" type="text" name="comment_name" value="<?= $comment['user_name'] ?>">
+
+                <label for="comment_message">Message</label>
+                <input id="comment_message" type="text" name="comment_message" value="<?= $comment['comment'] ?>">
+
+                <button class="remove-button" type="submit" name="update_comment">Update</button>
+                <button class="remove-button" type="submit" name="delete_comment">Remove</button>
+                <button class="remove-button" type="submit" name="disemvowel">Disemvowel</button>
+              </form>
+            </div>
+          <?php endforeach ?>
+
+      <?php endif ?>
     </main>
   </body>
 </html>
